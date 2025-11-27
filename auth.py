@@ -28,7 +28,7 @@ def login_admin() -> bool:
 
     try:
         colunas, resultado = executar_consulta(sql, (usuario,), fetch=True)
-        print(f"[DEBUG] Resultado da consulta: {resultado}")  # DEBUG
+        print(f"[DEBUG] Resultado da consulta: {resultado}")  
     except Exception as e:
         print(f"ERRO: Falha ao acessar o banco de dados. Detalhes: {e}")
         return False
@@ -39,7 +39,7 @@ def login_admin() -> bool:
         return False
 
     senha_hash_do_bd = resultado[0][0]
-    print(f"[DEBUG] Hash do banco: {senha_hash_do_bd}")  # DEBUG
+    print(f"[DEBUG] Hash do banco: {senha_hash_do_bd}") 
 
     if check_password(senha, senha_hash_do_bd):
         LOGGED_IN = True
@@ -63,4 +63,5 @@ def is_logged_in() -> bool:
 
 if __name__ == "__main__":
     login_admin()
+
 
