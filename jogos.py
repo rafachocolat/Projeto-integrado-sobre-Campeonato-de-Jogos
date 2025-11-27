@@ -8,7 +8,6 @@ def listar_jogos():
     
     if resultados:
         print("\n--- Listagem de Jogos ---")
-        # Adicionando o código do jogo para facilitar a exclusão/atualização
         sql_completo = "SELECT codigo_jogo, data_jogo, hora_jogo, equipe_casa, equipe_visitante FROM Jogos;"
         colunas_res_completo, resultados_completo = executar_consulta(sql_completo)
         
@@ -47,7 +46,6 @@ def atualizar_jogo():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Verifica se o jogo existe e pega os dados atuais
     sql_check = "SELECT data_jogo, hora_jogo, equipe_casa, equipe_visitante FROM Jogos WHERE codigo_jogo = %s;"
     _, jogo_atual = executar_consulta(sql_check, (codigo,), fetch=True)
     
@@ -64,7 +62,6 @@ def atualizar_jogo():
     nova_casa = input(f"Novo Código da Equipe da Casa (atual: {casa_atual}, deixe em branco para manter): ")
     nova_visitante = input(f"Novo Código da Equipe Visitante (atual: {visitante_atual}, deixe em branco para manter): ")
 
-    # Prepara a query de atualização
     updates = []
     params = []
     
@@ -105,7 +102,6 @@ def excluir_jogo():
         print("\nAcesso negado. Faça login como administrador para excluir dados.")
         return
     
-    # Lista os jogos para que o usuário possa ver os IDs
     listar_jogos()
     
     try:
@@ -114,7 +110,6 @@ def excluir_jogo():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Confirmação de exclusão
     confirmacao = input(f"Tem certeza que deseja excluir o jogo com ID {codigo}? (s/n): ").lower()
     if confirmacao != 's':
         print("Operação de exclusão cancelada.")
@@ -129,3 +124,4 @@ def excluir_jogo():
         print(f"\nErro: Nenhum jogo encontrado com o ID {codigo}.")
     else:
         print("\nErro ao tentar excluir o jogo.")
+
