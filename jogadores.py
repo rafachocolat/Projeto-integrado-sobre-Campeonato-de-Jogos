@@ -8,7 +8,6 @@ def listar_jogadores():
     
     if resultados:
         print("\n--- Listagem de Jogadores ---")
-        # Adicionando o código do jogador para facilitar a exclusão/atualização
         sql_completo = "SELECT codigo_jogador, nome_jogador, idade, posicao, codigo_equipe FROM Jogadores;"
         colunas_res_completo, resultados_completo = executar_consulta(sql_completo)
         
@@ -46,8 +45,6 @@ def atualizar_jogador():
     except ValueError:
         print("Erro: O código deve ser um número inteiro.")
         return
-
-    # Verifica se o jogador existe e pega os dados atuais
     sql_check = "SELECT nome_jogador, idade, posicao, codigo_equipe FROM Jogadores WHERE codigo_jogador = %s;"
     _, jogador_atual = executar_consulta(sql_check, (codigo,), fetch=True)
     
@@ -64,7 +61,6 @@ def atualizar_jogador():
     nova_posicao = input(f"Nova Posição (atual: {posicao_atual}, deixe em branco para manter): ")
     novo_codigo_equipe = input(f"Novo Código da Equipe (atual: {equipe_atual}, deixe em branco para manter): ")
 
-    # Prepara a query de atualização
     updates = []
     params = []
     
@@ -105,7 +101,6 @@ def excluir_jogador():
         print("\nAcesso negado. Faça login como administrador para excluir dados.")
         return
     
-    # Lista os jogadores para que o usuário possa ver os IDs
     listar_jogadores()
     
     try:
@@ -114,7 +109,6 @@ def excluir_jogador():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Confirmação de exclusão
     confirmacao = input(f"Tem certeza que deseja excluir o jogador com ID {codigo}? (s/n): ").lower()
     if confirmacao != 's':
         print("Operação de exclusão cancelada.")
@@ -129,3 +123,4 @@ def excluir_jogador():
         print(f"\nErro: Nenhum jogador encontrado com o ID {codigo}.")
     else:
         print("\nErro ao tentar excluir o jogador.")
+
