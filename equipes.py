@@ -36,7 +36,7 @@ def atualizar_equipe():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Verifica se a equipe existe
+  
     sql_check = "SELECT nome_equipe, cidade FROM Equipes WHERE codigo_equipe = %s;"
     _, equipe_atual = executar_consulta(sql_check, (codigo,), fetch=True)
     
@@ -50,7 +50,7 @@ def atualizar_equipe():
     print(f"Cidade atual: {equipe_atual[0][1]}")
     nova_cidade = input(f"Nova Cidade (deixe em branco para manter '{equipe_atual[0][1]}'): ")
 
-    # Prepara a query de atualização
+    
     updates = []
     params = []
     
@@ -91,7 +91,7 @@ def excluir_equipe():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Confirmação de exclusão
+  
     confirmacao = input(f"Tem certeza que deseja excluir a equipe com ID {codigo}? (s/n): ").lower()
     if confirmacao != 's':
         print("Operação de exclusão cancelada.")
@@ -106,3 +106,4 @@ def excluir_equipe():
         print(f"\nErro: Nenhuma equipe encontrada com o ID {codigo}.")
     else:
         print("\nErro ao tentar excluir a equipe.")
+
