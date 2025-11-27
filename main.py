@@ -1,5 +1,4 @@
 import getpass
-# Importa a função de acesso ao banco de dados
 from db_connector import executar_consulta 
 from auth import is_logged_in, login_admin, logout_admin
 from equipes import excluir_equipe, atualizar_equipe
@@ -11,7 +10,6 @@ from resultados import excluir_resultado, atualizar_resultado
 
 
 
-# --- Funções de Gerenciamento de Campeonato ---
 
 def get_equipe_id_by_name(nome_equipe):
     """Busca o codigo_equipe pelo nome da equipe."""
@@ -84,13 +82,13 @@ def cadastrar_jogo():
         
     print("\n--- CADASTRO DE JOGO ---")
     
-    # 1. Coleta de dados
+ 
     nome_equipe1 = input("Nome da Equipe Casa: ")
     nome_equipe2 = input("Nome da Equipe Visitante: ")
     data_jogo = input("Data do Jogo (AAAA-MM-DD): ")
     hora_jogo = input("Hora do Jogo (HH:MM): ")
 
-    # 2. Busca os IDs das equipes
+ 
     id_equipe1 = get_equipe_id_by_name(nome_equipe1)
     id_equipe2 = get_equipe_id_by_name(nome_equipe2)
 
@@ -98,7 +96,7 @@ def cadastrar_jogo():
         print("Erro: Uma ou ambas as equipes não foram encontradas no banco de dados. Certifique-se de que o nome está correto.")
         return
 
-    # 3. Inserção na tabela Jogos
+
     query = "INSERT INTO Jogos (data_jogo, hora_jogo, equipe_casa, equipe_visitante) VALUES (%s, %s, %s, %s);"
     colunas, rowcount = executar_consulta(query, (data_jogo, hora_jogo, id_equipe1, id_equipe2), fetch=False)
     
@@ -113,7 +111,7 @@ def cadastrar_jogo():
         
     print("\n--- CADASTRO DE JOGO ---")
     
-    # Simulação de coleta de dados do jogo
+
     equipe1 = input("Nome da Equipe 1: ")
     equipe2 = input("Nome da Equipe 2: ")
     data_jogo = input("Data do Jogo (AAAA-MM-DD): ")
@@ -164,7 +162,6 @@ def listar_jogos():
     """Função para listar todos os jogos cadastrados."""
     print("\n--- LISTA DE JOGOS ---")
     
-    # Consulta que usa JOIN para mostrar os nomes das equipes em vez dos IDs
     query = """
         SELECT 
             J.data_jogo, 
@@ -184,7 +181,6 @@ def listar_jogos():
     else:
         print("Nenhum jogo cadastrado.")
 
-# --- Funções de Acesso Restrito (Exemplo) ---
 
 def inserir_novo_jogador():
     """Função para inserir um novo jogador."""
@@ -198,14 +194,12 @@ def inserir_novo_jogador():
     posicao = input("Posição: ")
     nome_equipe = input("Nome da Equipe: ")
 
-    # Busca o ID da equipe
     id_equipe = get_equipe_id_by_name(nome_equipe)
 
     if not id_equipe:
         print(f"Erro: Equipe '{nome_equipe}' não encontrada. Certifique-se de que o nome está correto.")
         return
 
-    # Inserção na tabela Jogadores
     query = "INSERT INTO Jogadores (nome_jogador, idade, posicao, codigo_equipe) VALUES (%s, %s, %s, %s);"
     colunas, rowcount = executar_consulta(query, (nome_jogador, idade, posicao, id_equipe), fetch=False)
 
@@ -217,7 +211,6 @@ def inserir_novo_jogador():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
     print("\n--- INSERIR NOVO JOGADOR (ADMIN) ---")
-    # Lógica para inserir jogador
 
 def inserir_novo_resultado():
     """Função para inserir um novo resultado."""
@@ -227,12 +220,10 @@ def inserir_novo_resultado():
     
     print("\n--- INSERIR NOVO RESULTADO (ADMIN) ---")
     
-    # 1. Coleta de dados
     codigo_jogo = input("Código do Jogo (ID): ")
     placar_casa = input("Placar da Equipe Casa: ")
     placar_visitante = input("Placar da Equipe Visitante: ")
 
-    # 2. Busca os IDs das equipes do jogo
     query_jogo = "SELECT equipe_casa, equipe_visitante FROM Jogos WHERE codigo_jogo = %s;"
     colunas, resultado_jogo = executar_consulta(query_jogo, (codigo_jogo,), fetch=True)
 
@@ -243,7 +234,6 @@ def inserir_novo_resultado():
     id_casa = resultado_jogo[0][0]
     id_visitante = resultado_jogo[0][1]
 
-    # 3. Determina o vencedor
     vencedor_id = None
     perdedor_id = None
     if int(placar_casa) > int(placar_visitante):
@@ -252,9 +242,6 @@ def inserir_novo_resultado():
     elif int(placar_visitante) > int(placar_casa):
         vencedor_id = id_visitante
         perdedor_id = id_casa
-    # Se for empate, vencedor_id e perdedor_id permanecem None (NULL no BD)
-
-    # 4. Inserção na tabela Resultados
     query = """
         INSERT INTO Resultados (
             codigo_jogo, equipe_vencedora, equipe_perdedora, 
@@ -272,7 +259,7 @@ def inserir_novo_resultado():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
     print("\n--- INSERIR NOVO RESULTADO (ADMIN) ---")
-    # Lógica para inserir resultado
+
 
 def executar_consulta_sql():
     if not is_logged_in():
@@ -284,10 +271,8 @@ def executar_consulta_sql():
     
     if resultados:
         print("\n--- RESULTADOS ---")
-        # Imprime cabeçalho
         print(" | ".join(colunas))
         print("-" * (sum(len(c) for c in colunas) + len(colunas) * 3))
-        # Imprime dados
         for linha in resultados:
             print(" | ".join(str(item) for item in linha))
     elif colunas is not None:
@@ -298,9 +283,7 @@ def executar_consulta_sql():
         print("Acesso negado. Faça login como administrador para executar consultas.")
         return
     print("\n--- EXECUTAR CONSULTA SQL (ADMIN) ---")
-    # Lógica para executar consulta
 
-# --- Menu Principal ---
 
 def menu_principal():
     """Menu principal do sistema de gerenciamento de campeonato."""
@@ -350,29 +333,29 @@ def menu_principal():
         elif escolha == '4':
             listar_resultados()
         elif escolha == '5':
-            cadastrar_equipe() # Verifica login internamente
+            cadastrar_equipe() 
         elif escolha == '6':
-            cadastrar_jogo() # Verifica login internamente
+            cadastrar_jogo() 
         elif escolha == '7':
-            inserir_novo_jogador() # Verifica login internamente
+            inserir_novo_jogador()
         elif escolha == '8':
-            inserir_novo_resultado() # Verifica login internamente
+            inserir_novo_resultado() 
         elif escolha == '9':
-            atualizar_equipe() # Verifica login internamente
+            atualizar_equipe() 
         elif escolha == '10':
-            atualizar_jogador() # Verifica login internamente
+            atualizar_jogador() 
         elif escolha == '11':
-            atualizar_jogo() # Verifica login internamente
+            atualizar_jogo() 
         elif escolha == '12':
-            atualizar_resultado() # Verifica login internamente
+            atualizar_resultado() 
         elif escolha == '13':
-            excluir_equipe() # Verifica login internamente
+            excluir_equipe() 
         elif escolha == '14':
-            excluir_jogador() # Verifica login internamente
+            excluir_jogador() 
         elif escolha == '15':
-            excluir_jogo() # Verifica login internamente
+            excluir_jogo() 
         elif escolha == '16':
-            executar_consulta_sql() # Verifica login internamente
+            executar_consulta_sql() 
         elif escolha == 'A':
             if is_logged_in():
                 logout_admin()
@@ -384,7 +367,6 @@ def menu_principal():
         else:
             print("Opção inválida. Tente novamente.")
 
-# --- Ponto de Entrada do Sistema ---
 
 def iniciar_sistema():
     """Função que inicia o processo de login e carrega o sistema."""
@@ -392,3 +374,4 @@ def iniciar_sistema():
 
 if __name__ == "__main__":
     iniciar_sistema()
+
