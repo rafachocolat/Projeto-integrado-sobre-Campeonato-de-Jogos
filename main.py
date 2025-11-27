@@ -11,8 +11,7 @@ from resultados import excluir_resultado, atualizar_resultado
 
 
 
-def get_equipe_id_by_name(nome_equipe):
-    """Busca o codigo_equipe pelo nome da equipe."""
+def get_equipe_id_by_name(nome_equipe): 
     query = "SELECT codigo_equipe FROM Equipes WHERE nome_equipe = %s;"
     colunas, resultado = executar_consulta(query, (nome_equipe,), fetch=True)
     if resultado:
@@ -20,7 +19,6 @@ def get_equipe_id_by_name(nome_equipe):
     return None
 
 def cadastrar_equipe():
-    """Função para cadastrar uma nova equipe no campeonato."""
     if not is_logged_in():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
@@ -38,7 +36,6 @@ def cadastrar_equipe():
         print(f"Erro ao cadastrar a equipe '{nome_equipe}' de {cidade}.")
 
 def listar_jogadores():
-    """Função para listar todos os jogadores cadastrados, incluindo o nome da equipe."""
     print("\n--- LISTA DE JOGADORES ---")
     
     query = """
@@ -62,7 +59,6 @@ def listar_jogadores():
         print("Nenhum jogador cadastrado.")
 
 def listar_equipes():
-    """Função para listar todas as equipes cadastradas."""
     print("\n--- LISTA DE EQUIPES ---")
     
     query = "SELECT nome_equipe, cidade FROM Equipes ORDER BY nome_equipe;"
@@ -75,7 +71,6 @@ def listar_equipes():
         print("Nenhuma equipe cadastrada.")
 
 def cadastrar_jogo():
-    """Função para cadastrar um novo jogo (partida) no campeonato."""
     if not is_logged_in():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
@@ -104,7 +99,6 @@ def cadastrar_jogo():
         print(f"Jogo entre {nome_equipe1} e {nome_equipe2} cadastrado com sucesso.")
     else:
         print(f"Erro ao cadastrar o jogo.")
-    """Função para cadastrar um novo jogo (partida) no campeonato."""
     if not is_logged_in():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
@@ -125,7 +119,6 @@ def cadastrar_jogo():
         print(f"Erro ao cadastrar o jogo.")
 
 def listar_resultados():
-    """Função para listar todos os resultados cadastrados."""
     print("\n--- LISTA DE RESULTADOS ---")
     
     query = """
@@ -159,7 +152,6 @@ def listar_resultados():
         print("Nenhum resultado cadastrado.")
 
 def listar_jogos():
-    """Função para listar todos os jogos cadastrados."""
     print("\n--- LISTA DE JOGOS ---")
     
     query = """
@@ -183,7 +175,6 @@ def listar_jogos():
 
 
 def inserir_novo_jogador():
-    """Função para inserir um novo jogador."""
     if not is_logged_in():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
@@ -213,7 +204,6 @@ def inserir_novo_jogador():
     print("\n--- INSERIR NOVO JOGADOR (ADMIN) ---")
 
 def inserir_novo_resultado():
-    """Função para inserir um novo resultado."""
     if not is_logged_in():
         print("Acesso negado. Faça login como administrador para inserir dados.")
         return
@@ -369,9 +359,9 @@ def menu_principal():
 
 
 def iniciar_sistema():
-    """Função que inicia o processo de login e carrega o sistema."""
     menu_principal()
 
 if __name__ == "__main__":
     iniciar_sistema()
+
 
