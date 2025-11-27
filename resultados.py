@@ -8,7 +8,6 @@ def listar_resultados():
     
     if resultados:
         print("\n--- Listagem de Resultados ---")
-        # Adicionando o código do resultado para facilitar a exclusão/atualização
         sql_completo = "SELECT codigo_resultado, codigo_jogo, equipe_vencedora, equipe_perdedora, placar_equipe_casa, placar_equipe_visitante FROM Resultados;"
         colunas_res_completo, resultados_completo = executar_consulta(sql_completo)
         
@@ -30,7 +29,6 @@ def inserir_resultado():
     placar_casa = input("Placar da Equipe da Casa: ")
     placar_visitante = input("Placar da Equipe Visitante: ")
     
-    # Trata empate (vencedora/perdedora nulas)
     vencedora = vencedora if vencedora.strip() else None
     perdedora = perdedora if perdedora.strip() else None
     
@@ -52,7 +50,6 @@ def atualizar_resultado():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Verifica se o resultado existe e pega os dados atuais
     sql_check = "SELECT codigo_jogo, equipe_vencedora, equipe_perdedora, placar_equipe_casa, placar_equipe_visitante FROM Resultados WHERE codigo_resultado = %s;"
     _, resultado_atual = executar_consulta(sql_check, (codigo,), fetch=True)
     
@@ -70,13 +67,11 @@ def atualizar_resultado():
     novo_placar_casa = input(f"Novo Placar da Equipe Casa (atual: {placar_casa_atual}, deixe em branco para manter): ")
     novo_placar_visitante = input(f"Novo Placar da Equipe Visitante (atual: {placar_visitante_atual}, deixe em branco para manter): ")
 
-    # Trata campos vazios e empate
     vencedor_final = novo_vencedor if novo_vencedor else vencedor_atual
     perdedor_final = novo_perdedor if novo_perdedor else perdedor_atual
     
-    # Se ambos forem vazios, significa que o usuário quer manter o estado atual (que pode ser empate)
     if not novo_vencedor and not novo_perdedor:
-        pass # Mantém os valores atuais
+        pass
     elif novo_vencedor.strip() == "" and novo_perdedor.strip() == "":
         vencedor_final = None
         perdedor_final = None
@@ -85,7 +80,7 @@ def atualizar_resultado():
         perdedor_final = novo_perdedor if novo_perdedor.strip() else None
 
 
-    # Prepara a query de atualização
+
     updates = []
     params = []
     
@@ -93,7 +88,7 @@ def atualizar_resultado():
         updates.append("codigo_jogo = %s")
         params.append(novo_jogo)
     
-    # Se o usuário digitou algo para vencedor/perdedor, ou se o valor final é None (empate)
+   
     if novo_vencedor or vencedor_final is None:
         updates.append("equipe_vencedora = %s")
         params.append(vencedor_final)
@@ -131,7 +126,7 @@ def excluir_resultado():
         print("\nAcesso negado. Faça login como administrador para excluir dados.")
         return
     
-    # Lista os resultados para que o usuário possa ver os IDs
+   
     listar_resultados()
     
     try:
@@ -140,7 +135,7 @@ def excluir_resultado():
         print("Erro: O código deve ser um número inteiro.")
         return
 
-    # Confirmação de exclusão
+   
     confirmacao = input(f"Tem certeza que deseja excluir o resultado com ID {codigo}? (s/n): ").lower()
     if confirmacao != 's':
         print("Operação de exclusão cancelada.")
@@ -155,3 +150,4 @@ def excluir_resultado():
         print(f"\nErro: Nenhum resultado encontrado com o ID {codigo}.")
     else:
         print("\nErro ao tentar excluir o resultado.")
+
