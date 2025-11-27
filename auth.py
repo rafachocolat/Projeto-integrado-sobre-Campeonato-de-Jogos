@@ -1,26 +1,24 @@
-"""
-Módulo de utilidades para autenticação de administrador.
-"""
+
 
 import bcrypt
 from getpass import getpass
-from db_connector import executar_consulta  # Função de consulta ao BD
+from db_connector import executar_consulta  
 
-# Variável global que marca se o admin está logado
+
 LOGGED_IN = False
 
 def hash_password(password: str) -> str:
-    """Gera hash da senha usando bcrypt."""
+   
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed.decode('utf-8')
 
 def check_password(password: str, hashed_password: str) -> bool:
-    """Verifica se a senha corresponde ao hash."""
+    
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def login_admin() -> bool:
-    """Autentica o administrador."""
+   
     global LOGGED_IN
     print("=== LOGIN DO ADMINISTRADOR ===")
     usuario = input("Usuário: ")
@@ -62,6 +60,7 @@ def is_logged_in() -> bool:
     """Retorna status de login."""
     return LOGGED_IN
 
-# Teste interativo
+
 if __name__ == "__main__":
     login_admin()
+
